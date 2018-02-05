@@ -521,7 +521,169 @@
  </div>
 
 
- 
+<br />
+<div style="background-color: grey; color: white">
+    <h2>Views and the Razor Engine</h2>
+</div>
+<br />
 
+<div>
+    <p>
+        Razor syntax is a markup syntax for embedding server-based code into web pages. 
+        The Razor syntax consists of Razor markup, C#, and HTML. 
+        Files containing Razor code generally have a .cshtml file extension. In short, an ASP.NET Core view is a .cshtml file, 
+        the content in this file is C# code and HTML code.
+    </p>
+
+    <p>
+        Under the hood of Razor, the content in a valid .cshtml file will be translated to a view class, 
+        which derives from Microsoft.AspNetCore.Mvc.Razor.RazorPage<tmodel>. The Razor syntax content (C# + HTML) 
+        is translated to the bodies of the methods of this view class. Eventually, when the instance method ExecuteAsync is called, 
+        the final HTML content will be generated and sent back to user's web browser through the HTTP response.
+    </p>
+
+</div>
+
+<br />
+<div>
+    <h3>The Code of The View</h3>
+</div>
+<br />
+
+<div>
+    There are only two kinds of code in a Razor view:
+
+    <p/>
+
+    <ul>
+        1. <strong>Static text: </strong> this code consists of HTML elements and plain text. 
+        It is not executable or evaluable, and they form the skeleton of the view.
+    </ul>
+    
+    <ul>
+        2. <strong>Executable code: </strong> the most significant sign of executable code is the leading @@ symbol. Once you see there is an @@ symbol, 
+        the code following it should be a block of C# code or a piece of “C# like” executable code. This code executes when the view is being rendered.
+    </ul>
+    
+     <p/>
+    <h3> Razor Keywords</h3>
+
+    <p/>
+    We can divide Razor keywords into two groups:
+    <p />
+
+    <ul>
+        1. <strong>(Pure) Razor keywords:  </strong> model, functions, inherits, section, helper
+    </ul>
+
+    <ul>
+        2. <strong> C# Razor keywords: </strong> using, for, foreach, if, else, while, do, switch, case, default, try, catch, finally
+    </ul>
+
+    <p />
+
+    <p> Razor keywords are very similar to C# keywords, there are still some tiny differences you should pay attention to: </p>
+
+    <p />
+
+    <ul>
+        1. You don't need to put a ; at the end of statements, directives or expressions. 
+        For example, the using directive and the model directive in the first two lines of code.
+    </ul>
+
+    <ul>
+        2. It allows Razor expressions to appear in their statement blocks. For example, the @@p.ID and @@p.Name in the foreach statement.
+    </ul>
+
+    <p />
+    <h3> C# Code Blocks </h3>
+
+    <p> - If you declare variables in C# code blocks, they will be view level variables, similar to declaring some instance fields in a class. </p>
+    
+    <p>Razor doesn't support declaring functions in C# code blocks.
+     If you have to declare some view level functions (like method members), you should use a functions block, for example:</p>
+    
+    <br/>
+
+    <code>
+        @@functions{
+        <br />
+        string GetOffString(double rate) {
+        <br />
+        var offStr = $"{(1 - rate) * 100}%";
+        <br />
+        return offStr;
+        <br />
+            }
+        <br />
+        }
+    </code>
+
+    <br />
+
+    <p> Note: there are two common mistakes that new ASP.NET Core developers make: </p>
+    <br />
+
+    <ul> 1. Adding a semicolon (;) after Razor expressions. </ul>
+
+    <ul> 2. Using a Razor code block (@@{ ... }) where there should be a Razor expression (@@( ... )).</ul>
+
+    <br />
+    <h3>View Discovery </h3>
+    <br />
+
+    <p>The view rendering process is triggered by an action. When invoking the View method in an action, 
+    a process called view discovery takes place. This process determines which view file (.cshtml file) will be rendered. </p>
+
+    <p> Let's take a look at this code: </p>
+    <br />
+
+    <code>
+        public class HomeController : Controller {
+        <br />
+        public IActionResult Index() {
+        <br />
+        return View();
+        <br />
+        }
+        <br />
+        public IActionResult Index() {
+        <br />
+        return View("Index");
+        <br />
+        }
+        <br />
+
+        public IActionResult Index() {
+        <br />
+        return View("~/Views/Home/Index.cshtml");
+        <br />
+        }
+        <br />
+        }
+        <br />
+    </code>
+
+    <br/>
+
+    <p>
+        In the first action, the View method doesn't take any parameter. In this case, 
+        the Razor engine will try to find the project-root level folder called Views. 
+        If the Views folder exists, the Razor engine will try to find the subfolder that has the same name as the controller. 
+        If the subfolder exists, Razor will try to find the view file (.cshtml file) which has the same name as the action. 
+        In short, the view file ~\Views\Home\Index.cshtml will be rendered.
+    </p>
+
+    <p> In the second action, the View method takes a string value Index as the parameter. The Razor engine will search for the project-root level 
+    Views folder, then search for a Home subfolder, then search for the Index.cshtml file.</p>
+
+    <p>In the third action, the View method takes a relative path string as the parameter. You can omit the leading ~ or ~/. </p>
+
+    <p> For the first two invokes of the View method, if the folder or view file doesn't exist, the Razor engine will search for the 
+    Index.cshtml file in ~/Views/Shared folder. The third one won't search the ~\Views\Shard folder. </p>
+
+
+
+</div>
 
 
