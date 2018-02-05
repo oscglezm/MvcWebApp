@@ -1,0 +1,527 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>edX "Definition of MVC"</h1>
+    <p class="lead"> MVC is a software architectural pattern for implementing graphical user interface (GUI) computer applications.</p>
+    <p><a href="https://goo.gl/6xQZYy" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Models</h2>
+        <p>
+            The model is the central component of the pattern. It is an abstract data structure (usually a class) and reflects
+             the status and behaviors of the real-world objects with its properties and methods.
+        </p>
+        <p><a class="btn btn-default" href="https://goo.gl/NBDRUZ">Learn more &raquo;</a></p>
+    </div>
+     <div class="col-md-4">
+        <h2>Views</h2>
+        <p>A view can be any output representation of information, such as a chart or a diagram. Multiple views of the same information are possible, 
+         such as a bar chart for management and a tabular view for accountants. The view engines used in the ASP.NET MVC 3 and MVC 4 frameworks are Razor
+         and the Web Forms.</p>
+        <p><a class="btn btn-default" href="https://goo.gl/c2LSUU">Learn more &raquo;</a></p>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Controller and Actions</h2>
+        <p>A controller is a .NET class that used to define and group a set of actions. An action (or action method) is a method on a controller which
+         handles HTTP requests.Usually, the actions will launch the rendering process of the views and return the rendering result. 
+         Sometimes an action can transfer the logic execution to another action, which called redirection.
+        </p>
+        <p><a class="btn btn-default" href="https://goo.gl/Ajza73">Learn more &raquo;</a></p>
+    </div>
+
+</div>
+
+<div>
+    <div style="background-color: grey; color: white">
+        <h2> SOLID principles </h2>
+     </div>
+
+        <h4>Book: Agile Principles, Patterns, and Practices in C# </h4>
+
+
+        <table style="width: 100%;">
+            <tr>
+                <th>Initial</th>
+                <th>Principle</th>
+                <th>Concept</th>
+            </tr>
+            <tr>
+                <td>S</td>
+                <td>Single responsibility principle (SRP)</td>
+                <td>a class should have only a single responsibility (ex: only one potential change in the software's specification should be able to affect the specification of the class)</td>
+            </tr>
+            <tr>
+                <td>O</td>
+                <td>Open/closed principle (OCP)</td>
+                <td>“software entities … should be open for extension, but closed for modification.”</td>
+            </tr>
+            <tr>
+                <td>L</td>
+                <td>Liskov substitution principle (LSP)</td>
+                <td>“objects in a program should be replaceable with instances of their subtypes without altering the correctness of that program.” See also design by contract.</td>
+            </tr>
+            <tr>
+                <td>I</td>
+                <td>Interface segregation principle (ISP)</td>
+                <td>“many client-specific interfaces are better than one general-purpose interface.”</td>
+            </tr>
+            <tr>
+                <td>D</td>
+                <td>Dependency inversion principle (DIP)</td>
+                <td>One should “depend upon abstractions, [not] concretions.”</td>
+            </tr>
+        </table>
+
+    </div>
+
+<br />
+
+<div class="jumbotron">
+    <p>
+        When the user submits data from their web browser to the web application running on the web server, 
+        there will be data objects carried by the HTTP request and transferred to the web application.
+        These data objects are called data transfer model or data transfer objects (DTO).        
+    </p>
+
+</div>
+
+ 
+<div>
+    <img src="http://3.bp.blogspot.com/-937GnErorIU/UIGZXRdPA0I/AAAAAAAACuI/G1sAgATOEn4/s1600/3.png" />
+</div>
+
+<br />
+
+<div style="background-color: grey; color: white"><h2> Design a Good Controller </h2>  </div>
+
+<div>
+    To make the controller class work for a real-world ASP.NET Core web application, we need to follow the conventions below:
+</div>
+
+<br />
+
+<div>
+
+    <ul>
+        • Put all controller classes in the project's root-level Controller folder. It will lower the cost of maintenance.
+        When you create a new class in the Controllers folder with Visual Studio Code, the class will be organized into the Controllers namespace.
+    </ul>
+    
+    <ul >
+        • Make the controller class inherit from Microsoft.AspNetCore.Mvc.Controller.
+        This allows you to reuse the properties and methods implemented by the Controller base class. For example, call View method to render a view or,
+        call RedirectToAction to transfer the execution logic to another action method.
+
+        It's hard for us to implement these methods, and there are no necessaries for us to reinvent the wheel.
+        The View method, RedirectToAction method, and other useful members are already implemented by the Controller class.
+    </ul>
+   
+    <ul >
+        • Use a singular noun for controllers of ASP.NET Core web applications.
+        For example, ProductController. But, use a plural noun for controllers of ASP.NET Core web API applications
+        For example ProductsController. It helps us distinguish the controller classes for the different functionalities,
+        especially when we create web applications and web API applications in the same project. We will focus on creating MVC web applications in this course.
+    </ul>    
+    
+     
+</div>
+
+<div style="background-color: grey; color: white">
+   <h2> The Return Value of Actions  </h2>  
+</div>
+
+<div>
+    Theoretically, you can return values of any type from an action. For example, the actions below:
+
+    <div style="margin:40px">
+        <code>
+            <br />
+                public class SampleController {
+            <br />
+                public string SayHello() {
+            <br />
+               return "Hello, ASP.NET Core!"; } 
+            <br />
+               public double Add(double a, double b) { 
+            <br />
+               return a + b; } 
+            <br />
+              public IActionResult CylinderVolume(double r, double h) { 
+            <br />
+             double v = Math.PI * Math.Pow(r, 2) * h;
+            <br />
+             return new JsonResult(v); }
+            <br />
+             }
+        </code>
+     </div>
+
+        <p>
+            As a C# developer, you may ask: “<strong>IActionResult</strong>  is an interface, do we need to remember its implementation classes
+            then create instances for actions to return?” The answer is No. That's because most of the actions eventually do only two things
+            - either render a view or redirect to another action, and the functions for doing these two things are already implemented
+            in the class <strong> Microsoft.AspNetCore.Mvc.Controller. </strong>
+        </p>
+
+        <p>
+            In the Controller class, there are two groups of overloading methods,<strong> View </strong>  and <strong> RedirectToAction </strong>
+            The function of <strong> View </strong> methods is to render a view. The function of <strong> RedirectToAction </strong>  methods
+            is to transfer the execution
+            of one action to another. Accordingly, return types of these two groups of overloading methods are <strong> ViewResult </strong>  and
+            <strong> RedirectToActionResult </strong>,
+            both of them are implementations of <strong> IActionResult </strong>.
+        </p>
+
+    </div>
+
+<div class="jumbotron"> The URL routing determines the map of an ASP.NET Core web application. It is responsible for mapping an incoming
+     request to a route handler. Usually, the handler is an action. </div>
+
+<div>
+    <p>
+        <strong>Routes </strong> describe how URL paths should be mapped to actions, and they are <strong> case-insensitive </strong> .
+        ASP.NET Core uses Routing middleware to match the URLs of incoming requests with pre-defined routes;
+        then the valid URLs will be mapped to the target actions. As a result, the target actions will be triggered.    
+     </p>
+
+    <p>
+        There are two types of routes supported in ASP.NET Core:
+
+        <ul> • Conventional routing - Conventional routing defines routes by using conventions. In daily communication, 
+            conventions, URL templates, route templates are names that are interchangeable. A typical convention is "{controller=Home}/{action=Index}/{id?}".
+        </ul>
+
+        <div style="margin:40px">
+            <code>
+                app.UseMvc(routes => {
+                <br />
+                routes.MapRoute(
+                <br />
+                name: "default",
+                <br />
+                template: "{controller=Home}/{action=Index}/{id?}");
+                <br />
+                });
+            </code>
+        </div>
+
+        <div>
+            <p> This piece of code does two things: </p>
+
+            <ul> 1 - The web application to load the MVC middleware. Without this, the application is not an MVC application at all. </ul> 
+            <ul> 2 - Adds a route named default to its conventional routing system. </ul>
+
+       </div>
+
+         <br/>           
+
+        <ul>
+            • Attribute routing - Attribute routing uses a set of attributes to map actions directly to route templates.
+             For example, if a controller class is modified by [Route("Product")], all URLs start with Product will be navigated to this controller.
+             If an action in this controller is modified by [Route("Create")], the URL product/create will be handled just by this action.
+        </ul>
+        
+
+
+    </p>
+    
+
+ 
+
+<div>
+            <p>The string <code>"{controller=Home}/{action=Index}/{id?}"</code> is the <strong>routing template</strong> of the default route. This template guides the routing system mapping the incoming HTTP requests to the target controllers and actions.</p>
+            <p>The “syntax” of a routing template is very simple, below is a summary of how to deal with most of the scenarios you may encounter:</p>
+            <ol>
+                <li>There are only two kinds of content in a routing template - <em>route parameters</em> and <em>literal strings</em></li>
+            </ol>
+            <ul>
+                <li><strong>Route parameters</strong> are the curly braced items, for example <code>{controller}</code>, <code>{action}</code> and <code>{id}</code></li>
+                <li><strong>Literal string</strong> is all the content that is other than route parameters. For example, in the template <code>search/{year}/{file}.{ext}</code>, the <code>search/</code>, the <code>/</code> between <code>{year}</code> and <code>{file}</code>, and the <code>.</code> between <code>{file}</code> and <code>{ext}</code> are all literal strings.</li>
+                <li>Two route parameters must be separated by literal strings, or you will get an exception when the application starts.</li>
+            </ul>
+            <ol start="2">
+                <li>There are some constraints and decorators for route parameters:</li>
+            </ol>
+            <ul>
+                <li>The <code>{controller}</code> and <code>{action}</code> are two special parameters, their values will be mapped to the target controller's name and target action's name correspondingly.</li>
+                <li>When mapping the <code>{controller}</code> parameter to the target controller class, the <code>Controller</code> suffix (if it exists) of the class name, will be ignored. For example, if the <code>{controller}</code> parameter gets the value <code>Product</code>, it matches the class <code>ProductController</code>, the class <code>Product</code> modified by <code>[Controller]</code> and the class <code>Product</code> inherits <code>Microsoft.AspNetCore.Mvc.Controller</code>.</li>
+                <li>Except <code>{controller}</code> and <code>{action}</code>, other parameters will be mapped to the parameters of the target action by default.</li>
+                <li>A <code>?</code> suffix indicates the parameter can be omitted, for example the <code>{id?}</code></li>
+                <li>A route parameter can have a default value, for example the <code>Home</code> in <code>{controller=Home}</code> and the <code>Index</code> in <code>{action=Index}</code></li>
+                <li>You can modify the route parameter by adding constraints. For example <code>{id:int}</code> limits the parameter to accept only integer values, and <code>{ssn:regex(^\\d{{3}}-\\d{{2}}-\\d{{4}}$)}</code> requires the value of the parameter <code>{ssn}</code> to matching the regular expression. You can modify a parameter with multiple constraints, for example <code>{password:minlength(6):maxlength(20)}</code>.</li>
+            </ul>
+            <p>Based on the descriptions above, let's have a closer look at the template <code>{controller=Home}/{action=Index}/{id?}</code>:</p>
+            <table>
+                 <thead style="border:1; background-color:lightgray">
+                    <tr>
+                        <th style="text-align: left;">URL</th>
+                        <th style="text-align: left;">Intention</th>
+                        <th style="text-align: left;">Is Valid</th>
+                        <th style="text-align: left;">Comments</th>
+                        <th style="text-align: left;">Maps To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000</td>
+                        <td style="text-align: left;">Access the <em>home</em> of the website</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">Controller name, action name and ID parameter are all omitted</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index()</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/</td>
+                        <td style="text-align: left;">Access the <em>root</em> of the website</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">Controller name, action name and ID parameter are all omitted</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index()</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/home</td>
+                        <td style="text-align: left;">Access the <em>home</em> of the website</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">Action name and ID parameter are omitted</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index()</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/home/index</td>
+                        <td style="text-align: left;">Access the <code>home/index</code> URL</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">Only the ID parameter is omitted</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index()</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/home/index/101</td>
+                        <td style="text-align: left;">Access the <code>home/index</code> URL with additional ID information</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">All parameters get value assigned</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index(int id)</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/home/index?id=101</td>
+                        <td style="text-align: left;">Access the <code>home/index</code> URL with additional ID information</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">ID is passing through query string</td>
+                        <td style="text-align: left;"><code>HomeController</code>'s <code>Index(int id)</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/product</td>
+                        <td style="text-align: left;">Show me some product information</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">Action name and ID parameter are omitted</td>
+                        <td style="text-align: left;"><code>ProductController</code>'s <code>Index</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/product/showavailable</td>
+                        <td style="text-align: left;">Show me all available products</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">We don't need ID here, so it's omitted</td>
+                        <td style="text-align: left;"><code>ProductController</code>'s <code>ShowAvailable</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/product/showdetail/101</td>
+                        <td style="text-align: left;">Show me the detail information of product whose ID is 101</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">All parameters get value assigned</td>
+                        <td style="text-align: left;"><code>ProductController</code>'s <code>ShowDetail(int id)</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/product/search?kw=bike</td>
+                        <td style="text-align: left;">Search for bikes</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">We don't need ID here, but the target method must have a parameter named <code>kw</code></td>
+                        <td style="text-align: left;"><code>ProductController</code>'s <code>Search(string kw)</code> method</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/101</td>
+                        <td style="text-align: left;">Omit the controller and action name, call <code>HomeController</code>'s <code>Index(int id)</code> method with id=101</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">You will get a <code>404 Not Found</code> error</td>
+                        <td style="text-align: left;"><code>101Controller</code>'s <code>Index</code> action, which doesn't exist</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000/Index/101</td>
+                        <td style="text-align: left;">Omit the controller name, call <code>HomeController</code>'s <code>Index(int id)</code> method with id=101</td>
+                        <td style="text-align: left;">Yes</td>
+                        <td style="text-align: left;">You will get a <code>404 Not Found</code> error</td>
+                        <td style="text-align: left;"><code>IndexController</code>'s <code>101</code> action, which doesn't exist</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000///101</td>
+                        <td style="text-align: left;">Omit the controller and action name, call <code>HomeController</code>'s <code>Index(int id)</code> method with id=101</td>
+                        <td style="text-align: left;">No</td>
+                        <td style="text-align: left;">It is not a valid HTTP URL at all</td>
+                        <td style="text-align: left;">–</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">http://localhost:5000//Index/101</td>
+                        <td style="text-align: left;">Omit the controller name, call <code>HomeController</code>'s <code>Index(int id)</code> method with id=101</td>
+                        <td style="text-align: left;">No</td>
+                        <td style="text-align: left;">It is not a valid HTTP URL at all</td>
+                        <td style="text-align: left;">–</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+   <br />
+
+   <div style="background-color: grey; color: white">
+          <h2> Define Multiple Routes </h2>
+    </div>
+
+    <br />
+
+    <div>
+    Usually, the default route is enough for us to deal with most of the scenarios,
+    but sometimes we still need to define additional routes to deal with special cases. The code below defines two more routes:
+
+    <p>
+        <code>
+            <br />
+            app.UseMvc(routes =&gt; {
+            <br />
+            routes.MapRoute(
+            <br />
+            name: "default",
+            <br />
+            template: "{controller=Home}/{action=Index}/{id?}");
+            <br />
+            routes.MapRoute(
+            <br />
+            name: "productSearch",
+            <br />
+            template: "search/{kw?}",
+            <br />
+            defaults: new { controller = "Product", action = "Search" });
+            <br />
+            routes.MapRoute(
+            <br />
+            name: "docSearch",
+            <br />
+            template: "help/{kw?}",
+            <br />
+            defaults: new { controller = "Help", action = "FullTextSearch" });
+            <br />
+            });
+        </code>
+    </p>
+        <p>
+            The <code>productSearch</code> route will navigate all URLs starting with <code>search</code> to the <code>ProductController</code>'s
+            <code>Search(string kw)</code> action. The <code>docSearch</code> route will navigate all URLs
+            starting with <code>help</code> to the <code>HelpController</code>'s <code>FullTextSearch(string kw)</code> action.
+            Both of these two actions should implement the logic of dealing with the case of <code>String.IsNullOrWhiteSpace(kw) == true</code>.
+        </p>
+</div>
+
+<br/>
+
+<div style="background-color: grey; color: white"> <h2> Modify Action with Proper Attributes  </h2></div>
+
+<br />
+
+
+<div>
+
+    <p>
+        Usually, for Create, Update, and Delete operations, we create action pairs. The two actions in the action pair share the same name but have
+         a different parameter list. One action is responsible for navigating users to the operational view, the other action, 
+        which will be triggered by the operational view, does the actual job.
+    </p>
+
+    <br />
+
+    <table style="border:medium">
+        <thead style="background-color:lightgray">
+            <tr>
+                <th style="text-align: left;">Attribute</th>
+                <th style="text-align: left;">Action Functionality</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left;"><strong>[HttpGet]</strong></td>
+                <td style="text-align: left;">Show the page for creating/deleting/updating. Search or show data.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><strong>[HttpPost]</strong></td>
+                <td style="text-align: left;">Actual creation/update/deletion. Complex searching.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+
+    <code class=" language-cs">
+
+        public class ProductController : Controller {
+        <br />
+        [HttpGet]
+        <br />
+        public IActionResult Create() {
+        <br />
+        return View();
+        <br />
+        }
+        <br /><br />
+        [HttpPost]
+        <br />
+        public IActionResult Create(Product p) {
+        <br />
+        // business logic ...
+        <br />
+        return View(p);
+        <br />
+        }
+        <br />  <br />
+        [HttpGet]
+        <br />
+        public IActionResult Update() {
+        <br />
+        return View();
+        <br />
+        }
+        <br /><br />
+        [HttpPost]
+        <br />
+        public IActionResult Update(Product p) {
+        <br />
+        // business logic ...
+        <br />
+        return View(p);
+        <br />
+        }
+        <br /><br />
+        [HttpGet]
+        <br />
+        public IActionResult Delete() {
+        <br />
+        return View();
+        <br />
+        }
+        <br /><br />
+        [HttpGet]
+        <br />
+        public IActionResult Delete(int id) {
+        <br />
+        // business logic ...
+        <br />
+        return View();
+        <br />
+        }
+        <br />
+        }
+    </code>
+
+ </div>
+
+
+ 
+
+
+
