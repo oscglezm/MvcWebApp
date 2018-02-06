@@ -7,4 +7,6 @@ Implemented a responsive website from eDX course: MVC Application Design using .
 -  Controllers and Actions
 -  URL Routing
 -  Advanced Model Binding
-  
+-  Using Views and Razor
+-  Rendering Data
+-  Advanced Views
