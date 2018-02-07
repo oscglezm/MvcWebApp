@@ -683,6 +683,129 @@
     Index.cshtml file in ~/Views/Shared folder. The third one won't search the ~\Views\Shard folder. </p>
 
 
+    <br />
+    <h3> Custom HTML Helper </h3>
+    <br />
+
+    <p>
+        HTML helpers are implemented by using extension methods. Below is the source code for our own HTML helper.
+         You can put this class anywhere in the solution, but the suggestion is to put it in a project-root level folder named Extensions.
+    </p>
+
+    <code>
+        <br />
+        namespace Microsoft.AspNetCore.Mvc.Rendering {
+        <br />
+        public static class MyHtmlHelperExtensions {
+        <br />
+        public static IHtmlContent ColorfulHeading(this IHtmlHelper htmlHelper, int level, string color, string content) {
+        <br />
+        level = level &lt; 1 ? 1 : level;
+        <br />
+        level = level &gt; 6 ? 6 : level;
+        <br />
+        var tagName = $"h{level}";
+        <br />
+        var tagBuilder = new TagBuilder(tagName);
+        <br />
+        tagBuilder.Attributes.Add("style", $"color:{color ?? "green"}");
+        <br />
+        tagBuilder.InnerHtml.Append(content ?? string.Empty);
+        <br />
+        return tagBuilder;
+        <br />
+        }
+        <br />
+        }
+        <br />
+        }
+    </code>
+
+    <br />   <br />
+
+    Let's take a look at the code in detail:
+    <br />
+   
+
+    <ul>
+        <li>
+            We put this class in the Microsoft.AspNetCore.Mvc.Rendering namespace. That's because the Razor engine always
+            loads extensions from this namespace. You can put the class in any other namespace but you have to import the namespace
+            by using a <code>@@use</code> directive at the head of a view, which looks a little ugly.
+        </li>
+        <li>To hold extension methods, the class must be declared as <code>static</code></li>
+        <li>The extension method has to be <code>static</code> also. The return type is <code>IHtmlContent</code> 
+        which is implemented by the <code>TagBuilder</code> class. The parameter <code>this IHtmlHelper htmlHelper</code> 
+        indicates this method is an extension method.</li>
+        <li>The method name, <code>ColorfulHeading</code> reflects the logic 
+        - creating an HTML heading element for given text content, and allows developers to set the level and foreground color.</li>
+    </ul>
+   
+    <br/>
+
+    <p> To test the HTML helper, place the code below in any view then run the web application: </p>
+    
+    <ul>@@Html.ColorfulHeading(1, "green", "Welcome to Seattle") </ul>
+
+    <br />
+    <h3> Layout View </h3>
+    <br />
+
+    <p>
+        There are some UI elements shared across the whole website, such as a navigation bar and footer. 
+        The idea of a layout page is that we create a template view page containing these common UI elements, 
+        but leave some blank areas for content views. When developers add views to the website, 
+        they can reuse the layout view and embed the content views in the layout view.
+    </p>
+
+
+    <p> The concept of a layout view in ASP.NET Core is: </p>
+    
+    <br />
+
+    <ul>
+        <li>A <code>RazorPage</code> class is the base class for all views and this class has the property
+         <code>public string Layout { get; set; }</code></li>
+        <li>A <code>_ViewStart.cshtml</code> in the <code>~\Views</code> folder will be executed each 
+        time a view starts. In the code of this file, you can see <code>@@{ Layout = "_Layout"; }</code>. 
+        This code indicates the layout view for all content views is <code>_Layout.cshtml</code></li>
+        <li>Based on the view exploration, Razor engine can find the <code>_Layout.cshtml</code> file in <code>~\Views\Shared</code> folder</li>
+        <li>
+            In the <code>_Layout.cshtml</code> file you can find the code for shared UI elements. 
+            They compose the skeleton of the complete views.  You can also can find <code>@@RenderBody()</code> and 
+            <code>@@RenderSection()</code> in the layout page:
+            <ul>
+                <li>The place where <code>@@RenderBody()</code> appears is where the content view will show up</li>
+                <li>The <code>@@RenderSection()</code> helps render an optional content section of a content page. 
+                That means, a content page may have this content section or it may not have this section.</li>
+            </ul>
+        </li>
+        <li>A content page can override the <code>Layout</code> property value set by <code>_ViewStart.cshtml</code> by adding its 
+        own <code>@@{ Layout = ... }</code></li>
+    </ul>
+
+    <br />
+    <h3> Partial Views</h3>
+    <br />
+
+    <p> HTML helpers help us create and reuse UI components. 
+    The UI components created by HTML helpers are not business logic oriented, such as hyperlinks, text boxes and dropdown lists.</p>
+
+    <p>
+        A user control, or reusable business logic oriented UI component, in ASP.NET Core system, 
+        is a partial view. Partial views and content views are no different, 
+        but usually partial views are designed as reusable components. And, unlike rendering content views using @@RenderBody() in layout view, 
+        we use @@Html.Partial() to render partial views. Amazingly, the partial view can have its own view model. 
+        The overloads for the Partial extension methods are:
+    </p>
+
+  
+    <ul>
+        <li>For strongly-typed view model: <code>public static IHtmlContent Partial(this IHtmlHelper htmlHelper, string partialViewName, object model);</code></li>
+        <li>For loosely-typed view model: <code>public static IHtmlContent Partial(this IHtmlHelper htmlHelper, string partialViewName, ViewDataDictionary viewData);</code></li>
+        <li>No view model: <code>public static IHtmlContent Partial(this IHtmlHelper htmlHelper, string partialViewName);</code></li>
+    </ul>
+
 
 </div>
 

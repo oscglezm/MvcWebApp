@@ -52,4 +52,3 @@ c:\users\oscar\documents\visual studio 2013\Projects\mvcWebApp\mvcWebApp\bin\Mic
 c:\users\oscar\documents\visual studio 2013\Projects\mvcWebApp\mvcWebApp\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 c:\users\oscar\documents\visual studio 2013\Projects\mvcWebApp\mvcWebApp\obj\Debug\mvcWebApp.dll
 c:\users\oscar\documents\visual studio 2013\Projects\mvcWebApp\mvcWebApp\obj\Debug\mvcWebApp.pdb
-C:\Users\Oscar\documents\visual studio 2013\Projects\mvcWebApp\mvcWebApp\obj\Debug\mvcWebApp.csprojResolveAssemblyReference.cache
